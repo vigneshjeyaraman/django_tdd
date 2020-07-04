@@ -1,0 +1,11 @@
+# this will ensure that we will have all minor
+# updates and no breaking changes.
+# version have two part minor and major
+# minor is something in which we get patches
+# and security update and major is something
+# in which we might get new features.
+# first . is major and second . is minor
+# and third . is patch and security update
+# it is also called minor changes.
+Django>=2.1.3,<2.2.0
+djangorestframework>=3.9.0,<3.10.0

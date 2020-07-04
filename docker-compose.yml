@@ -1,0 +1,25 @@
+---
+# version of docker compose we are going to use.
+version: "3"
+
+
+services:
+  # name of our service.
+  app:
+    build:
+      # setting context to our current project.
+      context: .
+    # on which port our project is going to run.
+    ports:
+      - "8000:8000"
+    # volumes make sure that if any changes occur in local machine
+    # they get automatically updated in docker.
+    # it is simply mapping our app folder to container
+    # app folder
+    volumes: 
+      - ./app:/app
+    # command which will run our app in docker
+    # sh -c means run command on shell 
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
