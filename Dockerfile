@@ -1,6 +1,6 @@
 # this is the base image with which we are creating our docker.
 FROM python:3.7-alpine
-MAINTAINER Vignesh Jeyaraman
+LABEL Vignesh Jeyaraman
 
 # this is suggested to do when we are running
 # python django with docker

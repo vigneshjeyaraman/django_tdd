@@ -1,11 +1,16 @@
+# which language we are going to use
 language: python
+# which version of the language you want to install
+# in travis container. First check the stable version
+# travis support.
 python:
     - "3.6"
-
+# what services we require on docker
 services:
     - docker
-
+# any thing specific to be take care before running actual project commands.
 before_script: pip install docker-compose
 
+# script you want to run
 script:
     - docker-compose run app sh -c "python manage.py test & flake8"
