@@ -7,7 +7,15 @@ LABEL Vignesh Jeyaraman
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
+# below these are dependency for psycopg2
+# what we did is to keep our docker container light
+# we installed those dependency and later once psycopg is
+# installed we will delete them.
+RUN apk add --update --no-cache postgresql-client
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+    gcc libc-dev linux-headers postgresql-dev
 RUN pip install -r requirements.txt
+RUN apk del .tmp-build-deps
 
 RUN mkdir /app
 WORKDIR /app
