@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, authentication, permissions
 # With ObtainAuthToken we can authenticate user with
 # username and password but as we are using email we
 # to inherit it and modify
@@ -18,3 +18,13 @@ class CreateTokenView(ObtainAuthToken):
     serializer_class = AuthTokenSerializer
     # renderer classes are used so that we can login using browser
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+class ManageUserView(generics.RetrieveUpdateAPIView):
+    """Managa the authenticated user"""
+    serializer_class = UserSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        """Retrieve and return authentication user"""
+        return self.request.user
