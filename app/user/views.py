@@ -19,6 +19,7 @@ class CreateTokenView(ObtainAuthToken):
     # renderer classes are used so that we can login using browser
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
+
 class ManageUserView(generics.RetrieveUpdateAPIView):
     """Managa the authenticated user"""
     serializer_class = UserSerializer
