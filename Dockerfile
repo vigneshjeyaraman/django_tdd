@@ -11,9 +11,10 @@ COPY ./requirements.txt /requirements.txt
 # what we did is to keep our docker container light
 # we installed those dependency and later once psycopg is
 # installed we will delete them.
-RUN apk add --update --no-cache postgresql-client
+# musl and zlib are dependencies for pillow
+RUN apk add --update --no-cache postgresql-client jpeg-dev
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
-    gcc libc-dev linux-headers postgresql-dev
+    gcc libc-dev linux-headers postgresql-dev musl-dev zlib-dev
 RUN pip install -r requirements.txt
 RUN apk del .tmp-build-deps
 
@@ -28,7 +29,14 @@ COPY ./app /app
 # have root access and can do anything
 # to avoid this we create a separate user with limited
 # access so that intruder will have limited access.
+# -p will create directory and subdirectory if they don't
+# exists
+RUN mkdir -p /vol/web/media
+RUN mkdir -p /vol/web/static
 RUN adduser -D user
+# given user permission for vol folder
+RUN chown -R user:user /vol/
+RUN chmod -R 755 /vol/web
 # this will switch the user
 USER user 
 
