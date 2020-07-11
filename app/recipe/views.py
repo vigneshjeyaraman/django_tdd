@@ -17,8 +17,17 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        """return objects for the current authenticated user only"""
-        return self.queryset.filter(user=self.request.user).order_by('-name')
+        """return objectsx for the current authenticated user only"""
+        assigned_only = bool(
+            int(self.request.query_params.get('assigned_only', 0))
+        )
+        queryset = self.queryset
+        if assigned_only:
+            queryset = queryset.filter(recipe__isnull=False)
+
+        return queryset.filter(
+            user=self.request.user
+        ).order_by('-name').distinct()
 
     # it is called when we call create objects in our viewsets
     # similar to get_queryset
@@ -61,7 +70,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if ingredients:
             ingredients_id = self._params_to_ints(ingredients)
             queryset = queryset.filter(ingredients__id__in=ingredients_id)
-           
+
         return queryset.filter(user=self.request.user)
 
     def get_serializer_class(self):
